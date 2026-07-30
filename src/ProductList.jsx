@@ -308,7 +308,9 @@ function ProductList({ onHomeClick }) {
                                     <div>{category.category}</div>
                                 </h1>
                                 <div className='product-list'>
-                                    {category.plants.map((plant, plantIndex) => (
+                                    {category.plants.map((plant, plantIndex) => {
+                                    const exists = totalItems.some(item => item.name === plant.name);
+                                    return(
                                         <div className='product-card' key={plantIndex}>
                                             <img
                                                 className='product-image'
@@ -319,14 +321,15 @@ function ProductList({ onHomeClick }) {
                                             <div className='product-description'>{plant.description}</div>
                                             <div className='product-cost'>{plant.cost}</div>
                                             <button
-                                                className={totalItems.some(item => item.name === plant.name) ? "product-button added-to-cart" : "product-button"}
+                                                className={exists ? "product-button added-to-cart" : "product-button"}
                                                 onClick={() => handleAddToCart(plant)}
-                                                disabled={totalItems.some(item => item.name === plant.name) ? true : false}
+                                                disabled={exists ? true : false}
                                             >
-                                            {totalItems.some(item => item.name === plant.name) ? "Added to cart" : "Add to cart"}
+                                            {exists ? "Added to cart" : "Add to cart"}
                                             </button>
                                         </div>
-                                    ))}
+                                        )}
+                                    )}
                                 </div>
                             </div>
                         ))}
