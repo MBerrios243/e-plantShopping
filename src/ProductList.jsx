@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
-import {addItem} from './CartSlice'
+import {addItem} from './CartSlice';
+import { useSelector, useDispatch } from "react-redux";
+
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
+    const dispatch = useDispatch();
+
 
     const handleAddToCart = (product) => {
         dispatch(addItem(product));
@@ -285,8 +289,7 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-                    {
-                        plantsArray.map((category, index) => (
+                    {plantsArray.map((category, index) => (
                             <div key={index}>
                                 <h1>
                                     <div>{category.category}</div>
@@ -303,17 +306,16 @@ function ProductList({ onHomeClick }) {
                                             <div className='product-description'>{plant.description}</div>
                                             <div className='product-cost'>{plant.cost}</div>
                                             <button
-                                                className='product-button'
+                                                className={plant.name in addedToCart ? "product-button added-to-cart" : "product-button"}
                                                 onClick={() => handleAddToCart(plant)}
                                             >
-                                                Add to cart
+                                            {plant.name in addedToCart ? "Added to cart" : "Add to cart"}
                                             </button>
                                         </div>
                                     ))}
                                 </div>
                             </div>
-                        ))
-                    }
+                        ))}
 
                 </div>
             ) : (
